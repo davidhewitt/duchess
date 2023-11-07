@@ -21,13 +21,10 @@ pub enum State {
     Detached,
 }
 
-fn attached_or(
-    jvm: JvmPtr,
-    f: impl FnOnce() -> Result<AttachGuard>,
-) -> Result<AttachGuard> {
+fn attached_or(_jvm: JvmPtr, f: impl FnOnce() -> Result<AttachGuard>) -> Result<AttachGuard> {
     STATE.with(|state| match state.replace(State::InUse) {
         State::AttachedPermanently(env) => Ok(AttachGuard {
-            jvm,
+            // jvm,
             env,
             permanent: true,
         }),
@@ -93,7 +90,7 @@ impl Drop for JniCallbackGuard<'_> {
 pub fn attach_permanently(jvm: JvmPtr) -> Result<AttachGuard> {
     attached_or(jvm, || {
         Ok(AttachGuard {
-            jvm,
+            // jvm,
             // no-op if already attached outside of duchess
             env: unsafe { jvm.attach_thread()? },
             permanent: true,
@@ -104,7 +101,7 @@ pub fn attach_permanently(jvm: JvmPtr) -> Result<AttachGuard> {
 pub unsafe fn attach<'jvm>(jvm: JvmPtr) -> Result<AttachGuard> {
     attached_or(jvm, || {
         Ok(AttachGuard {
-            jvm,
+            // jvm,
             // no-op if already attached outside of duchess
             env: unsafe { jvm.attach_thread()? },
             permanent: false,
@@ -114,7 +111,7 @@ pub unsafe fn attach<'jvm>(jvm: JvmPtr) -> Result<AttachGuard> {
 
 /// When dropped, will detach the current thread from the JVM unless it was permanently attached.
 pub struct AttachGuard {
-    jvm: JvmPtr,
+    // jvm: JvmPtr,
     env: EnvPtr<'static>, // not send!
     permanent: bool,
 }
@@ -127,10 +124,10 @@ impl Drop for AttachGuard {
                 debug_assert!(matches!(old_state, State::InUse))
             });
         } else {
-            match unsafe { self.jvm.detach_thread() } {
-                Ok(()) => STATE.with(|state| state.set(State::Detached)),
-                Err(err) => tracing::warn!(?err, "couldn't detach thread from JVM"),
-            }
+            // match unsafe { self.jvm.detach_thread() } {
+            //     Ok(()) => STATE.with(|state| state.set(State::Detached)),
+            //     Err(err) => tracing::warn!(?err, "couldn't detach thread from JVM"),
+            // }
         }
     }
 }

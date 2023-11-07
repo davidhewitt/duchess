@@ -111,9 +111,19 @@ mod auto {
             public float floatValue();
             public double doubleValue();
             public static java.lang.Long getLong(java.lang.String);
-          }
+        }
+
+        package java.io;
+
+        public class File {
+            public java.lang.String getAbsolutePath();
+        }
 
         package java.util;
+
+        public class Calendar { }
+
+        public class GregorianCalendar extends java.util.Calendar { }
 
         public interface java.util.List<E> {
             public abstract int size();
