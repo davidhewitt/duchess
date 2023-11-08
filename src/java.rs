@@ -121,9 +121,20 @@ mod auto {
 
         package java.util;
 
-        public class Calendar { }
+        public class Calendar {
+            public static final int YEAR;
+            public static final int MONTH;
+            public static final int DAY_OF_MONTH;
+            public static final int HOUR_OF_DAY;
+            public static final int MINUTE;
+            public static final int SECOND;
 
-        public class GregorianCalendar extends java.util.Calendar { }
+            public int get(int);
+        }
+
+        public class GregorianCalendar extends java.util.Calendar {
+            public java.util.GregorianCalendar(int, int, int, int, int, int);
+        }
 
         public interface java.util.List<E> {
             public abstract int size();
